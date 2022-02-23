@@ -18,6 +18,11 @@ RowConvertResult = namedtuple('RowConvertResult',
                                ])
 
 
+CustomCodeRowConvertResult = namedtuple('RowConvertResult',
+                              ['code',
+                               ])
+
+
 class ImageConverter(object):
 
     def __init__(self, parser):
@@ -28,11 +33,10 @@ class ImageConverter(object):
     def generate_rpy_elements(self):
         result = []
         parsed_sheets = self.parser.get_image_parsed_sheets()
+        label = "script"
         for idx, parsed_sheet in enumerate(parsed_sheets):
-            showinfo("hi parsed_sheet ", parsed_sheet.name)
             if parsed_sheet.name == "Image":
                 # label = parsed_sheet.name
-                label = "script"
                 result.append(SheetConvertResult(label=label, data=self.parse_by_sheet(parsed_sheet.row_values)))
         return result
 
@@ -70,3 +74,50 @@ class RowConverter(object):
         if name:
             self.converter.file_name = name
         return name
+    
+    
+class CustomCodeConverter(object):
+
+    def __init__(self, parser):
+        self.parser = parser
+        self.code = ''
+
+    def generate_rpy_elements(self):
+        result = []
+        parsed_sheets = self.parser.get_custom_code_parsed_sheets()
+        label = "script"
+        for idx, parsed_sheet in enumerate(parsed_sheets):
+            if parsed_sheet.name == "CustomCode":
+                # print(parsed_sheet.name)
+                result.append(SheetConvertResult(label=label, data=self.parse_by_sheet(parsed_sheet.row_values)))
+        return result
+
+    def parse_by_sheet(self, values):
+        result = []
+        for row_value in values:
+            result.append(self.parse_by_row_value(row_value))
+        return result
+
+    def parse_by_row_value(self, row):
+        row_converter = CustomCodeRowConverter(row, self)
+        return row_converter.convert()
+    
+    
+
+class CustomCodeRowConverter(object):
+
+    def __init__(self, row, converter):
+        self.row = row
+        self.converter = converter
+
+    def convert(self):
+        return CustomCodeRowConvertResult(
+            code=self._converter_code(),
+        )
+
+    def _converter_code(self):
+        code = self.row[0]
+        # print(code)
+        if code:
+            self.converter.code = code
+        return code

@@ -126,3 +126,16 @@ image fire = "images/fire.png"
 image ht = "images/hetristalk.png"
 image ml1 = "images/movingleon1.png"
 image ml2 = "images/movingleon2.png"
+image end_pic:
+    "heart.png"
+    size (25, 25)
+    block:
+        rotate 0
+        linear 3.0 rotate 360
+        repeat
+init:
+    $ my_center = Position(xpos= 0.5, xanchor='center' )
+    $ h_center = Position(xpos= 0.46, xanchor='center' )
+    $ my_left = Position(xpos= 0.1, xanchor='left')
+    $ my_right = Position(xpos= 0.9, xanchor='right')
+

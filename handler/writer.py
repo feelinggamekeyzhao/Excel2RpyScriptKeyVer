@@ -78,6 +78,17 @@ class ImageRpyFileWriter(object):
         output_path = output_dir + "/" + res.label + '.rpy'
         with open(output_path, 'a', encoding='utf-8') as f:
             for rpy_element in res.data:
-                iamge_renpy_code = IMAGE_TEMPLATE.format(variable=rpy_element.variable, file_name=rpy_element.file_name) + '\n'
-                f.write(iamge_renpy_code)
+                image_renpy_code = IMAGE_TEMPLATE.format(variable=rpy_element.variable, file_name=rpy_element.file_name) + '\n'
+                f.write(image_renpy_code)
+        
+        
+class CustomCodeRpyFileWriter(object):
+    
+    @classmethod
+    def write_file(cls, output_dir, res):
+        output_path = output_dir + "/" + res.label + '.rpy'
+        with open(output_path, 'a', encoding='utf-8') as f:
+            for rpy_element in res.data:
+                custom_renpy_code = rpy_element.code + '\n'
+                f.write(custom_renpy_code)
         

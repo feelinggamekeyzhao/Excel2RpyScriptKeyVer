@@ -35,7 +35,6 @@ class CharacterConverter(object):
         result = []
         parsed_sheets = self.parser.get_character_parsed_sheets()
         for idx, parsed_sheet in enumerate(parsed_sheets):
-            showinfo("hi parsed_sheet ", parsed_sheet.name)
             if parsed_sheet.name == "Character":
                 # label = parsed_sheet.name
                 label = "script"
@@ -43,14 +42,12 @@ class CharacterConverter(object):
         return result
 
     def parse_by_sheet(self, values):
-        # showinfo("hi", "hihi 2.4")
         result = []
         for row_value in values:
             result.append(self.parse_by_row_value(row_value))
         return result
 
     def parse_by_row_value(self, row):
-        # showinfo("hi", "hihi 2.5")
         row_converter = RowConverter(row, self)
         return row_converter.convert()
 
@@ -62,7 +59,6 @@ class RowConverter(object):
         self.converter = converter
 
     def convert(self):
-        # showinfo("hi", "hihi 2.6")
         return RowConvertResult(
             variable=self._converter_variable(),
             name=self._converter_name(),
@@ -78,7 +74,6 @@ class RowConverter(object):
         return variable
 
     def _converter_name(self):
-        # showinfo("hi", "hihi 2.312")
         name = self.row[ElementColNumMapping.get('name')]
         if name:
             self.converter.name = name

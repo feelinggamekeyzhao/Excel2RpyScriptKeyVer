@@ -66,7 +66,6 @@ class Parser(object):
     def character_parse_sheet(self, sheet):
         result = []
         for i in range(EXCEL_PARSE_CHARACTER_START_ROW, sheet.nrows):
-            # showinfo("row", i)
             data = [r.value for r in sheet.row(i)]
             if not any(data):
                 continue
@@ -95,3 +94,23 @@ class Parser(object):
             # assert len(data) == EXCEL_PARSE_IMAGE_START_COL
             result.append(data)
         return result
+
+    def get_custom_code_parsed_sheets(self):
+        wb = self.get_excel_wb()
+        result = []
+        for sheet in wb.sheets():
+            result.append(SheetParseResult(name=sheet.name, row_values=self.custom_code_parse_sheet(sheet)))
+        return result
+    
+    def custom_code_parse_sheet(self, sheet):
+        result = []
+        for i in range(0, sheet.nrows):
+            data = [r.value for r in sheet.row(i)]
+            if not any(data):
+                continue
+            if len(data) < 1:
+                data.extend(["" for i in range(1 - len(data))])
+            # assert len(data) == EXCEL_PARSE_IMAGE_START_COL
+            result.append(data)
+        return result
+    

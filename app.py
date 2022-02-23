@@ -13,9 +13,9 @@ from const import CURRENT_VERSION
 from corelib.exception import ConvertException, SaveFileException
 from handler.converter import Converter
 from handler.character_converter import CharacterConverter
-from handler.image_converter import ImageConverter
+from handler.image_converter import ImageConverter, CustomCodeConverter
 from handler.parser import Parser
-from handler.writer import RpyFileWriter, CharacterRpyFileWriter, ImageRpyFileWriter
+from handler.writer import RpyFileWriter, CharacterRpyFileWriter, ImageRpyFileWriter, CustomCodeRpyFileWriter
 from tools.image_data import *
 
 
@@ -164,6 +164,11 @@ class Application(Application_ui):
                 convert_results = conveter.generate_rpy_elements()
                 for res in convert_results:
                     self.convert_image(self.saveAddr.get(), res)
+                
+                conveter = CustomCodeConverter(parser)
+                convert_results = conveter.generate_rpy_elements()
+                for res in convert_results:
+                    self.convert_custom_code(self.saveAddr.get(), res)
             except ConvertException as err:
                 success_flag = False
                 showerror("轉換錯誤", err.msg)
@@ -181,6 +186,12 @@ class Application(Application_ui):
     def convert_image(self, output_dir, res):
         try:
             ImageRpyFileWriter.write_file(output_dir, res)
+        except FileNotFoundError:
+            raise SaveFileException("保存目錄不存在")
+            
+    def convert_custom_code(self, output_dir, res):
+        try:
+            CustomCodeRpyFileWriter.write_file(output_dir, res)
         except FileNotFoundError:
             raise SaveFileException("保存目錄不存在")
         
