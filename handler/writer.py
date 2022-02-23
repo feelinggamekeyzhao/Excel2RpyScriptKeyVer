@@ -53,3 +53,31 @@ class RpyFileWriter(object):
                 # fix menu在最后一行
                 f.write("menu:\n" + "\n".join(
                     [MENU_TEMPLATE.format(label=m.label, target=m.target) for m in current_menus]))
+                
+                
+
+CHAR_TEMPLATE = "define {variable} = Character('{name}', color=\"{color}\", image=\"{image}\", what_suffix=\"{what_suffix}\")"
+
+class CharacterRpyFileWriter(object):
+
+    @classmethod
+    def write_file(cls, output_dir, res):
+        output_path = output_dir + "/" + res.label + '.rpy'
+        with open(output_path, 'w', encoding='utf-8') as f:
+            for rpy_element in res.data:
+                char_renpy_code = CHAR_TEMPLATE.format(variable=rpy_element.variable, name=rpy_element.name, color=rpy_element.color, image=rpy_element.image, what_suffix=rpy_element.what_suffix) + '\n'
+                f.write(char_renpy_code)
+         
+         
+IMAGE_TEMPLATE = "image {variable} = \"{file_name}\""
+
+class ImageRpyFileWriter(object):
+    
+    @classmethod
+    def write_file(cls, output_dir, res):
+        output_path = output_dir + "/" + res.label + '.rpy'
+        with open(output_path, 'a', encoding='utf-8') as f:
+            for rpy_element in res.data:
+                iamge_renpy_code = IMAGE_TEMPLATE.format(variable=rpy_element.variable, file_name=rpy_element.file_name) + '\n'
+                f.write(iamge_renpy_code)
+        
