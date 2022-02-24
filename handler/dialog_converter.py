@@ -122,7 +122,7 @@ class RowConverter(object):
         music = self.row[ElementColNumMapping.get('music')]
         if not music:
             return None
-        cmd = "stop" if music == "stop" else "play"
+        cmd = "stop_music" if music == "stop" else "play"
         return Audio(music, cmd)
     
     def _converter_sound(self):
@@ -132,7 +132,7 @@ class RowConverter(object):
         if sound.startswith('loop'):
             return Audio(sound.replace('loop', ''), 'loop')
         else:
-            cmd = "stop" if sound == "stop" else "sound"
+            cmd = "stop_sound" if sound == "stop" else "sound"
             return Audio(sound, cmd)
     
     def _converter_scene(self):
@@ -164,7 +164,7 @@ class RowConverter(object):
         # new_characters = [Converter.generate_character(ch) for ch in tachie_str.split(";")]
         # self.converter.characters = new_characters
         # characters.extend(new_characters)
-        return tachie_str
+        return Image(tachie_str, "show", self._converter_tachie_position())
         
     def _converter_tachie_position(self):
         if not self.converter.tachie:
@@ -175,11 +175,13 @@ class RowConverter(object):
             return None
         if PositionMapping.get(tachie_position_str) is not None:
             tachie_position = PositionMapping.get(tachie_position_str)
-            if self.converter.tachies.get(tachie_position) is not None:
-                raise ValueError("previous tachie is not hide yet")
-                return None
-            else:
-                self.converter.tachies[tachie_position] = self.converter.tachie
+            self.converter.tachies[tachie_position] = self.converter.tachie
+            
+            # if self.converter.tachies.get(tachie_position) is not None:
+                # raise ValueError("previous tachie is not hide yet")
+                # return None
+            # else:
+                # self.converter.tachies[tachie_position] = self.converter.tachie
         else:
             raise ValueError("Invalid tachie_position:{}".format(tachie_position_str))
         self.converter.tachie_position = tachie_position

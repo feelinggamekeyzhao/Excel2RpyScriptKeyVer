@@ -156,11 +156,11 @@ class Dialog(RpyElement):
         self.text = text
         self.character = character
 
-    # def render(self):
-    #     result = []
-    #     if self.character:
-    #         result.append("{character} {text}".format(character=self.role.pronoun, text="\"{}\"".format(self.text)))
-    #     return "\n".join(result)
+    def render(self):
+        result = []
+        if self.character:
+            result.append("    {character} \"{text}\"".format(character=self.character, text=self.text))
+        return "\n".join(result)
 
 
 class Audio(RpyElement):
@@ -207,8 +207,11 @@ class Audio(RpyElement):
     def loop(self):
         return self.sound() + " loop"
 
-    def stop(self):
+    def stop_music(self):
         return "    stop music"
+
+    def stop_sound(self):
+        return "    stop sound"
 
     def render(self):
         if self.cmd == 'play':
@@ -219,8 +222,10 @@ class Audio(RpyElement):
             return self.queue()
         elif self.cmd == 'sound':
             return self.sound()
-        elif self.cmd == 'stop':
-            return self.stop()
+        elif self.cmd == 'stop_music':
+            return self.stop_music()
+        elif self.cmd == 'stop_sound':
+            return self.stop_sound()
         elif self.cmd == 'loop':
             return self.loop()
         else:

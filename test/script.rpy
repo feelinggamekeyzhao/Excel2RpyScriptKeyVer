@@ -1,4 +1,4 @@
-define nanakin = Character('金娜娜', color="#ffffff", image="nana", what_suffix="{image=end_pic}")
+define nana = Character('金娜娜', color="#ffffff", image="nana", what_suffix="{image=end_pic}")
 define hetris = Character('哈菲特', color="#ffffff", image="hetris", what_suffix="{image=end_pic}")
 define hikari = Character('瑛光', color="#ffffff", image="hikari", what_suffix="{image=end_pic}")
 define leon = Character('里昂', color="#ffffff", image="leon", what_suffix="{image=end_pic}")
@@ -141,6 +141,7 @@ init:
     $ custom_left = Position(xpos= 0.1, xanchor='left')
     $ custom_right = Position(xpos= 0.9, xanchor='right')
 
+    # Row 2
 
 label start:
     stop music
@@ -148,11 +149,45 @@ label start:
     scene prologue
     with dissolve
     with Pause(3.0)
-    play sound "audio/sfx/metro_arriving.mp3"
+    # Row 3
     scene mtr1
     with fade
+    # Row 4
+    play sound "audio/sfx/metro_arriving.mp3"
+    narrator_adv "請勿靠近車門"
+    # Row 5
+    narrator_adv "我拖著行李下車，小心翼翼地穿梭在人群中。"
+    # Row 6
     play sound "audio/sfx/footstep.mp3"
     scene street
     with fade
+    # Row 7
     play music "audio/music/bgm04.mp3"
     play sound "audio/sfx/streets_afternoon.mp3"
+    nana normal "哇…這就是大都市的感覺嗎！"
+    # Row 8
+    narrator_adv "直到大學畢業為止都是住在小市鎮的我，對眼前的環境感到十分新鮮。"
+    # Row 9
+    nana normal "(除了中學時跟小光來過這裡遊覽外，都沒有機會來。)"
+    # Row 10
+    nana smile1 "我得好好努力，識應這裏的生活才行！"
+    # Row 11
+    play sound "audio/sfx/mobile.mp3"
+    narrator_adv "嗶嗶嗶嗶嗶"
+    with vpunch
+    # Row 12
+    nana shock1 "（啊！是小光！）"
+    # Row 13
+    stop sound
+    show hikari phone_smile at custom_center
+    with dissolve
+    # Row 14
+    voice "audio/voice/hikari/hi_hi.wav"
+    hikari "Hi~娜娜，順利到達了嗎？"
+    # Row 15
+    nana smile1 "嗯！我剛剛下車呢！"
+    # Row 16
+    show hikari phone_talk at custom_center
+    # Row 17
+    voice "audio/voice/hikari/hi_ok.mp3"
+    hikari "看來你很興奮呢，面試準備得如何了？"
