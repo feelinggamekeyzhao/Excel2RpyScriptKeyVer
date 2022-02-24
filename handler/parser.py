@@ -4,7 +4,7 @@ from collections import namedtuple
 
 from tkinter.messagebox import showerror, showinfo
 
-from const.parser_setting import EXCEL_PARSE_START_ROW, EXCEL_PARSE_START_COL, EXCEL_PARSE_CHARACTER_START_ROW, EXCEL_PARSE_CHARACTER_START_COL, EXCEL_PARSE_IMAGE_START_ROW, EXCEL_PARSE_IMAGE_START_COL
+from const.parser_setting import EXCEL_PARSE_DIALOG_START_ROW, EXCEL_PARSE_DIALOG_START_COL, EXCEL_PARSE_CHARACTER_START_ROW, EXCEL_PARSE_CHARACTER_START_COL, EXCEL_PARSE_IMAGE_START_ROW, EXCEL_PARSE_IMAGE_START_COL
 from corelib.exception import ParseFileException
 from tools.excel import read_excel
 
@@ -45,14 +45,12 @@ class Parser(object):
 
     def parse_sheet(self, sheet):
         result = []
-        for i in range(EXCEL_PARSE_START_ROW, sheet.nrows):
+        for i in range(EXCEL_PARSE_DIALOG_START_ROW, sheet.nrows):
             data = [r.value for r in sheet.row(i)]
             if not any(data):
                 continue
-            if len(data) < EXCEL_PARSE_START_COL:
-                # 补全数据
-                data.extend(["" for i in range(EXCEL_PARSE_START_COL - len(data))])
-            assert len(data) == EXCEL_PARSE_START_COL
+            if len(data) < EXCEL_PARSE_DIALOG_START_COL:
+                data.extend(["" for i in range(EXCEL_PARSE_DIALOG_START_COL - len(data))])
             result.append(data)
         return result
 

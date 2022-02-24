@@ -92,3 +92,29 @@ class CustomCodeRpyFileWriter(object):
                 custom_renpy_code = rpy_element.code + '\n'
                 f.write(custom_renpy_code)
         
+        
+LABEL_TEMPLATE = "\nlabel {label}:\n" 
+PAUSE_TEMPLATE = "    with Pause({duration})\n" 
+class DialogRpyFileWriter(object):
+    
+    @classmethod
+    def write_file(cls, output_dir, res):
+        output_path = output_dir + "/" + res.label + '.rpy'
+        with open(output_path, 'a', encoding='utf-8') as f:
+            for rpy_element in res.data:
+                if rpy_element.label:
+                    custom_renpy_code = LABEL_TEMPLATE.format(label=rpy_element.label)
+                    f.write(custom_renpy_code)
+                if rpy_element.music:
+                    f.write(rpy_element.music.render() + '\n')
+                if rpy_element.sound:
+                    f.write(rpy_element.sound.render() + '\n')
+                if rpy_element.scene:
+                    f.write(rpy_element.scene.render() + '\n')
+                if rpy_element.voice:
+                    f.write(rpy_element.voice.render() + '\n')
+                if rpy_element.transition:
+                    f.write(rpy_element.transition.render() + '\n')
+                if rpy_element.pause > 0:
+                    custom_renpy_code = PAUSE_TEMPLATE.format(duration=rpy_element.pause)
+                    f.write(custom_renpy_code)

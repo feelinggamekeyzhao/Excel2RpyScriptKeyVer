@@ -8,7 +8,7 @@ from corelib.exception import RenderException
 
 from const.dialog_converter_setting import ElementColNumMapping, PositionMapping, ImageCmdMapping, TransitionMapping, \
     ReplaceCharacterMapping, BooleanMapping
-from model.element import Dialog, Image, Transition, Audio, Role, Command, Voice, Menu
+from model.element import Dialog, Image, Transition, Audio, Command, Voice, Menu
 
 SheetConvertResult = namedtuple('SheetConvertResult', ['label', 'data'])
 
@@ -16,10 +16,10 @@ RowConvertResult = namedtuple('RowConvertResult',
                               ['label',  
                                'music',
                                'sound',
-                               'background',
+                               'scene',
                                'voice',
                                'tachie',
-                               'tachie_position'
+                               'tachie_position',
                                'show_menu',
                                'is_option',
                                'character',
@@ -43,7 +43,7 @@ class DialogConverter(object):
         self.label = ''
         self.music = ''
         self.sound = ''
-        self.background = ''
+        self.scene = ''
         self.voice = ''
         self.tachie = ''
         self.tachie_position = ''
@@ -68,7 +68,7 @@ class DialogConverter(object):
         for idx, parsed_sheet in enumerate(parsed_sheets):
             label = "script"
             if parsed_sheet.name != "Character" and parsed_sheet.name != "Image" and parsed_sheet.name != "CustomCode":
-                print(sheet.name)
+                # print(parsed_sheet.name)
                 result.append(SheetConvertResult(label=label, data=self.parse_by_sheet(parsed_sheet.row_values)))
         return result
 
@@ -94,7 +94,7 @@ class RowConverter(object):
             label=self._converter_label(),
             music=self._converter_music(),
             sound=self._converter_sound(),
-            background=self._converter_background(),
+            scene=self._converter_scene(),
             voice=self._converter_voice(),
             tachie=self._converter_tachie(),
             tachie_position=self._converter_tachie_position(),
@@ -135,11 +135,11 @@ class RowConverter(object):
             cmd = "stop" if sound == "stop" else "sound"
             return Audio(sound, cmd)
     
-    def _converter_background(self):
-        background = self.row[ElementColNumMapping.get('background')]
-        if not background:
+    def _converter_scene(self):
+        scene = self.row[ElementColNumMapping.get('scene')]
+        if not scene:
             return None
-        return Image(background, "scene")
+        return Image(scene, "scene")
     
     def _converter_voice(self):
         voice_str = str(self.row[ElementColNumMapping.get('voice')]).strip()
@@ -168,21 +168,20 @@ class RowConverter(object):
         
     def _converter_tachie_position(self):
         if not self.converter.tachie:
-            RenderException("no tachie for this position")
             return None
-        
+        tachie_position = ""
         tachie_position_str = str(self.row[ElementColNumMapping.get('tachie_position')]).strip()
         if not tachie_position_str:
             return None
         if PositionMapping.get(tachie_position_str) is not None:
             tachie_position = PositionMapping.get(tachie_position_str)
             if self.converter.tachies.get(tachie_position) is not None:
-                RenderException("previous tachie is not hide yet")
+                raise ValueError("previous tachie is not hide yet")
                 return None
             else:
                 self.converter.tachies[tachie_position] = self.converter.tachie
         else:
-            RenderException("Invalid tachie_position:{}".format(tachie_position_str))
+            raise ValueError("Invalid tachie_position:{}".format(tachie_position_str))
         self.converter.tachie_position = tachie_position
         return tachie_position
     
@@ -208,7 +207,7 @@ class RowConverter(object):
         if character:
             self.converter.character = character
             self.converter.current_character = character
-        else not self.converter.is_option:
+        elif not self.converter.is_option:
             if self.converter.current_character:
                 character = self.converter.current_character
                 self.converter.character = character
@@ -238,6 +237,7 @@ class RowConverter(object):
     
     def _converter_hide_tachie_at_pos(self):
         tachie = ''
+        tachie_position = ''
         tachie_position_str = str(self.row[ElementColNumMapping.get('hide_tachie_at_pos')]).strip()
         if not tachie_position_str:
             return None
@@ -277,9 +277,15 @@ class RowConverter(object):
         return Command("    nvl clear")
 
     def _converter_pause(self):
-        pause = self.row[ElementColNumMapping.get('pause')]
-        self.converter.pause = pause
-        return pause
+        pause_str = self.row[ElementColNumMapping.get('pause')]
+        if not pause_str:
+            return 0
+        pause = float(pause_str)
+        if(pause > 0):
+            self.converter.pause = pause
+            return pause
+        else:
+            return 0
 
     def _converter_renpy_command(self):
         cmd = self.row[ElementColNumMapping.get('renpy_command')]

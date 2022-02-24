@@ -5,7 +5,7 @@ ElementColNumMapping = {
     'label': 0,
     'music': 1,
     'sound': 2,
-    'background': 3,
+    'scene': 3,
     'voice': 4,
     'tachie': 5,
     'tachie_position': 6,

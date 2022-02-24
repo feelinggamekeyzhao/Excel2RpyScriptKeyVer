@@ -40,21 +40,21 @@ class Text(RpyElement):
 
 
 class Role(RpyElement):
+    pass
+#     def __init__(self, pronoun, name, color=None):
+#         """
+#         :param pronoun: 代称
+#         :param name: 角色名
+#         :param color: 颜色
+#         """
+#         self.pronoun = pronoun
+#         self.name = name
+#         self.color = color or "#c8c8ff"
 
-    def __init__(self, pronoun, name, color=None):
-        """
-        :param pronoun: 代称
-        :param name: 角色名
-        :param color: 颜色
-        """
-        self.pronoun = pronoun
-        self.name = name
-        self.color = color or "#c8c8ff"
-
-    def render(self):
-        if not self.name:
-            return ""
-        return ROLE_TEMPLATE.format(name=self.pronoun, role=self.name, color=self.color, side_character=self.pronoun)
+#     def render(self):
+#         if not self.name:
+#             return ""
+#         return ROLE_TEMPLATE.format(name=self.pronoun, role=self.name, color=self.color, side_character=self.pronoun)
 
 
 class Image(RpyElement):
@@ -106,7 +106,7 @@ class Transition(RpyElement):
         self.style = style
 
     def render(self):
-        return "with {}".format(self.style) if self.style else ""
+        return "    with {}".format(self.style) if self.style else ""
 
 
 
@@ -124,8 +124,9 @@ class Mode(RpyElement):
 
 class Voice(RpyElement):
     def __init__(self, name, sustain=False):
-        self.name = name
+        self.name = "audio/voice/" + name
         self.sustain = sustain
+        
         # sustain not implement
 
     def render(self):
@@ -153,7 +154,7 @@ class Dialog(RpyElement):
 
     def __init__(self, text, character):
         self.text = text
-        self.character = role
+        self.character = character
 
     # def render(self):
     #     result = []
@@ -188,30 +189,24 @@ class Audio(RpyElement):
         self.fadein = args.get("fadein", 0.5)
         self.next_audio = args.get("next_audio")
 
-    # 循环播放音乐
     def play(self):
         return "    play music \"{}\"".format(self.name)
 
-    # 用于旧音乐的淡出和新音乐的淡入
     def fade(self):
         return self.play() + "fadeout {fadeout} fadein {fadein}".format(fadeout=self.fadeout, fadein=self.fadein)
 
-    # 当前音乐播放完毕后播放的音频文件
     def queue(self):
         if self.next_audio:
             return "    queue \"{audio_name}\"".format(audio_name=self.next_audio.name)
         else:
             return self.play()
 
-    # 不会循环播放
     def sound(self):
         return "    play sound \"{}\"".format(self.name)
 
-    # 不会循环播放
     def loop(self):
         return self.sound() + " loop"
 
-    # 停止播放音乐
     def stop(self):
         return "    stop music"
 

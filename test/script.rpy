@@ -126,6 +126,8 @@ image fire = "images/fire.png"
 image ht = "images/hetristalk.png"
 image ml1 = "images/movingleon1.png"
 image ml2 = "images/movingleon2.png"
+define narrator_nvl = Character(None, kind=nvl)
+define narrator_adv = Character(None, kind=adv)
 image end_pic:
     "heart.png"
     size (25, 25)
@@ -134,8 +136,23 @@ image end_pic:
         linear 3.0 rotate 360
         repeat
 init:
-    $ my_center = Position(xpos= 0.5, xanchor='center' )
-    $ h_center = Position(xpos= 0.46, xanchor='center' )
-    $ my_left = Position(xpos= 0.1, xanchor='left')
-    $ my_right = Position(xpos= 0.9, xanchor='right')
+    $ custom_center = Position(xpos= 0.5, xanchor='center' )
+    $ hetris_center = Position(xpos= 0.46, xanchor='center' )
+    $ custom_left = Position(xpos= 0.1, xanchor='left')
+    $ custom_right = Position(xpos= 0.9, xanchor='right')
 
+
+label start:
+    stop music
+    play sound "audio/sfx/chapterstart.mp3"
+    scene prologue
+    with dissolve
+    with Pause(3.0)
+    play sound "audio/sfx/metro_arriving.mp3"
+    scene mtr1
+    with fade
+    play sound "audio/sfx/footstep.mp3"
+    scene street
+    with fade
+    play music "audio/music/bgm04.mp3"
+    play sound "audio/sfx/streets_afternoon.mp3"

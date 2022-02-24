@@ -16,7 +16,7 @@ from handler.dialog_converter import DialogConverter
 from handler.character_converter import CharacterConverter
 from handler.image_converter import ImageConverter, CustomCodeConverter
 from handler.parser import Parser
-from handler.writer import RpyFileWriter, CharacterRpyFileWriter, ImageRpyFileWriter, CustomCodeRpyFileWriter
+from handler.writer import RpyFileWriter, CharacterRpyFileWriter, ImageRpyFileWriter, CustomCodeRpyFileWriter, DialogRpyFileWriter
 from tools.image_data import *
 
 
@@ -170,6 +170,11 @@ class Application(Application_ui):
                 convert_results = conveter.generate_rpy_elements()
                 for res in convert_results:
                     self.convert_custom_code(self.saveAddr.get(), res)
+                
+                conveter = DialogConverter(parser)
+                convert_results = conveter.generate_rpy_elements()
+                for res in convert_results:
+                    self.convert_dialog(self.saveAddr.get(), res)
             except ConvertException as err:
                 success_flag = False
                 showerror("轉換錯誤", err.msg)
@@ -193,6 +198,12 @@ class Application(Application_ui):
     def convert_custom_code(self, output_dir, res):
         try:
             CustomCodeRpyFileWriter.write_file(output_dir, res)
+        except FileNotFoundError:
+            raise SaveFileException("保存目錄不存在")
+            
+    def convert_dialog(self, output_dir, res):
+        try:
+            DialogRpyFileWriter.write_file(output_dir, res)
         except FileNotFoundError:
             raise SaveFileException("保存目錄不存在")
         
