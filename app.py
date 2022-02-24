@@ -12,6 +12,7 @@ import requests
 from const import CURRENT_VERSION
 from corelib.exception import ConvertException, SaveFileException
 from handler.converter import Converter
+from handler.dialog_converter import DialogConverter
 from handler.character_converter import CharacterConverter
 from handler.image_converter import ImageConverter, CustomCodeConverter
 from handler.parser import Parser

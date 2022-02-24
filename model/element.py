@@ -39,7 +39,6 @@ class Text(RpyElement):
             self.triggers += triggers
 
 
-# 角色
 class Role(RpyElement):
 
     def __init__(self, pronoun, name, color=None):
@@ -58,7 +57,6 @@ class Role(RpyElement):
         return ROLE_TEMPLATE.format(name=self.pronoun, role=self.name, color=self.color, side_character=self.pronoun)
 
 
-# 图像
 class Image(RpyElement):
 
     def __init__(self, name, cmd, position=""):
@@ -76,17 +74,17 @@ class Image(RpyElement):
         if not self.name:
             return ""
         else:
-            return "hide {name}".format(name=self.name)
+            return "    hide {name}".format(name=self.name)
 
     # 清除所有图像并显示了一个背景图像
     def scene(self):
-        return "scene {name}".format(name=self.name)
+        return "    scene {name}".format(name=self.name)
 
     def show(self):
         if self.position:
-            return "show {name} at {position}".format(name=self.name, position=self.position)
+            return "    show {name} at {position}".format(name=self.name, position=self.position)
         else:
-            return "show {name}".format(name=self.name)
+            return "    show {name}".format(name=self.name)
 
     def render(self):
         if self.cmd == 'show':
@@ -99,7 +97,6 @@ class Image(RpyElement):
             raise RenderException("不存在的Image指令:{}".format(self.cmd))
 
 
-# 转场
 class Transition(RpyElement):
 
     def __init__(self, style):
@@ -111,72 +108,6 @@ class Transition(RpyElement):
     def render(self):
         return "with {}".format(self.style) if self.style else ""
 
-
-# 音效
-class Audio(RpyElement):
-
-    def __init__(self, name, cmd, **args):
-        """
-        :param name: 音效名
-        :param cmd: 指令
-        :param args: 参数 fadeout/fadein: 音乐的淡入淡出  next_audio:下一个音效
-        """
-        if isinstance(name, float):
-            self.name = str(int(name))
-        elif isinstance(name, int):
-            self.name = str(name)
-        else:
-            self.name = name
-        if self.name.split(".")[-1].lower() != 'mp3':
-            self.name += ".mp3"
-        self.name = "audio/" + self.name
-        self.cmd = cmd
-        self.fadeout = args.get("fadeout", 0.5)
-        self.fadein = args.get("fadein", 0.5)
-        self.next_audio = args.get("next_audio")
-
-    # 循环播放音乐
-    def play(self):
-        return "play music \"{}\"".format(self.name)
-
-    # 用于旧音乐的淡出和新音乐的淡入
-    def fade(self):
-        return self.play() + "fadeout {fadeout} fadein {fadein}".format(fadeout=self.fadeout, fadein=self.fadein)
-
-    # 当前音乐播放完毕后播放的音频文件
-    def queue(self):
-        if self.next_audio:
-            return "queue \"{audio_name}\"".format(audio_name=self.next_audio.name)
-        else:
-            return self.play()
-
-    # 不会循环播放
-    def sound(self):
-        return "play sound \"{}\"".format(self.name)
-
-    # 不会循环播放
-    def loop(self):
-        return self.sound() + " loop"
-
-    # 停止播放音乐
-    def stop(self):
-        return "stop music"
-
-    def render(self):
-        if self.cmd == 'play':
-            return self.play()
-        elif self.cmd == 'fade':
-            return self.fade()
-        elif self.cmd == 'queue':
-            return self.queue()
-        elif self.cmd == 'sound':
-            return self.sound()
-        elif self.cmd == 'stop':
-            return self.stop()
-        elif self.cmd == 'loop':
-            return self.loop()
-        else:
-            raise RenderException("不存在的Audio指令:{}".format(self.cmd))
 
 
 class Mode(RpyElement):
@@ -195,9 +126,10 @@ class Voice(RpyElement):
     def __init__(self, name, sustain=False):
         self.name = name
         self.sustain = sustain
+        # sustain not implement
 
     def render(self):
-        return 'voice "{}"'.format(self.name)
+        return '    voice "{}"'.format(self.name)
 
 
 class Menu(RpyElement):
@@ -213,3 +145,88 @@ class Command(RpyElement):
 
     def render(self):
         return self.cmd
+    
+    
+    
+# key class
+class Dialog(RpyElement):
+
+    def __init__(self, text, character):
+        self.text = text
+        self.character = role
+
+    # def render(self):
+    #     result = []
+    #     if self.character:
+    #         result.append("{character} {text}".format(character=self.role.pronoun, text="\"{}\"".format(self.text)))
+    #     return "\n".join(result)
+
+
+class Audio(RpyElement):
+
+    def __init__(self, name, cmd, **args):
+        """
+        :param name: 音效名
+        :param cmd: 指令
+        :param args: 参数 fadeout/fadein: 音乐的淡入淡出  next_audio:下一个音效
+        """
+        self.cmd = cmd
+        if isinstance(name, float):
+            self.name = str(int(name))
+        elif isinstance(name, int):
+            self.name = str(name)
+        else:
+            self.name = name
+        if self.name.split(".")[-1].lower() != 'mp3':
+            self.name += ".mp3"
+        
+        if cmd == 'sound' or cmd == 'loop':
+            self.name = "audio/sfx/" + self.name
+        else:
+            self.name = "audio/music/" + self.name
+        self.fadeout = args.get("fadeout", 0.5)
+        self.fadein = args.get("fadein", 0.5)
+        self.next_audio = args.get("next_audio")
+
+    # 循环播放音乐
+    def play(self):
+        return "    play music \"{}\"".format(self.name)
+
+    # 用于旧音乐的淡出和新音乐的淡入
+    def fade(self):
+        return self.play() + "fadeout {fadeout} fadein {fadein}".format(fadeout=self.fadeout, fadein=self.fadein)
+
+    # 当前音乐播放完毕后播放的音频文件
+    def queue(self):
+        if self.next_audio:
+            return "    queue \"{audio_name}\"".format(audio_name=self.next_audio.name)
+        else:
+            return self.play()
+
+    # 不会循环播放
+    def sound(self):
+        return "    play sound \"{}\"".format(self.name)
+
+    # 不会循环播放
+    def loop(self):
+        return self.sound() + " loop"
+
+    # 停止播放音乐
+    def stop(self):
+        return "    stop music"
+
+    def render(self):
+        if self.cmd == 'play':
+            return self.play()
+        elif self.cmd == 'fade':
+            return self.fade()
+        elif self.cmd == 'queue':
+            return self.queue()
+        elif self.cmd == 'sound':
+            return self.sound()
+        elif self.cmd == 'stop':
+            return self.stop()
+        elif self.cmd == 'loop':
+            return self.loop()
+        else:
+            raise RenderException("Invalid Audio Command:{}".format(self.cmd))
