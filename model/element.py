@@ -60,23 +60,16 @@ class Role(RpyElement):
 class Image(RpyElement):
 
     def __init__(self, name, cmd, position=""):
-        """
-        :param name: 图像名
-        :param cmd: 指令: hide、scene、show
-        :param position: 位置：left 表示界面左端， right 表示屏幕右端， center 表示水平居中(默认位置)， truecenter 表示水平和垂直同时居中。
-        """
         self.name = name
         self.cmd = cmd
         self.position = position
 
-    # 当某个角色离开但场景不变化时，才需要使用hide
     def hide(self):
         if not self.name:
             return ""
         else:
             return "    hide {name}".format(name=self.name)
 
-    # 清除所有图像并显示了一个背景图像
     def scene(self):
         return "    scene {name}".format(name=self.name)
 
@@ -94,7 +87,7 @@ class Image(RpyElement):
         elif self.cmd == 'hide':
             return self.hide()
         else:
-            raise RenderException("不存在的Image指令:{}".format(self.cmd))
+            raise RenderException("Invalid Image Command:{}".format(self.cmd))
 
 
 class Transition(RpyElement):

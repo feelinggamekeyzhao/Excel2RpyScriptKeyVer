@@ -19,14 +19,12 @@ RowConvertResult = namedtuple('RowConvertResult',
                                'scene',
                                'voice',
                                'tachie',
-                               'tachie_position',
+                               'transition_1',
                                'show_menu',
                                'is_option',
                                'character',
                                'dialog',
-                               'hide_tachie_afterward',
-                               'hide_tachie_at_pos',
-                               'transition',
+                               'transition_2',
                                'special_effect',
                                'jump_to_label',  
                                'clear_page',
@@ -46,16 +44,15 @@ class DialogConverter(object):
         self.scene = ''
         self.voice = ''
         self.tachie = ''
+        self.tachie_cmd = ''
         self.tachie_position = ''
-        self.tachies = dict()
         self.show_menu = False
         self.is_option = False
         self.character = ''
         self.current_character = ''
         self.dialog = ''
-        self.hide_tachie_afterward = False
-        self.hide_tachie_at_pos = ''
-        self.transition = ''
+        self.transition_1 = ''
+        self.transition_2 = ''
         self.special_effect = ''
         self.jump_to_label = ''
         self.clear_page = ''
@@ -97,14 +94,12 @@ class RowConverter(object):
             scene=self._converter_scene(),
             voice=self._converter_voice(),
             tachie=self._converter_tachie(),
-            tachie_position=self._converter_tachie_position(),
+            transition_1=self._converter_transition_1(),
             show_menu=self._converter_show_menu(),
             is_option=self._converter_is_option(),
             character=self._converter_character(),
             dialog=self._converter_dialog(),
-            hide_tachie_afterward=self._converter_hide_tachie_afterward(),
-            hide_tachie_at_pos=self._converter_hide_tachie_at_pos(),
-            transition=self._converter_transition(),
+            transition_2=self._converter_transition_2(),
             special_effect=self._converter_special_effect(),
             jump_to_label=self._converter_jump_to_label(),
             clear_page=self._converter_clear_page(),
@@ -156,15 +151,11 @@ class RowConverter(object):
         if not tachie_str:
             return None
         self.converter.tachie = tachie_str
-        
-        # characters = []
-        # 新立绘出现时回收旧立绘
-        # for character in self.converter.characters:
-            # characters.append(Image(character.name, 'hide'))
-        # new_characters = [Converter.generate_character(ch) for ch in tachie_str.split(";")]
-        # self.converter.characters = new_characters
-        # characters.extend(new_characters)
-        return Image(tachie_str, "show", self._converter_tachie_position())
+        tachie_cmd_str = str(self.row[ElementColNumMapping.get('tachie_cmd')]).strip()
+        tachie_cmd = 'hide' if tachie_cmd_str == 'Hide' else 'show' 
+        pos_str = self._converter_tachie_position()
+        pos = PositionMapping.get("Center") if not pos_str else pos_str
+        return Image(tachie_str, tachie_cmd, pos)
         
     def _converter_tachie_position(self):
         if not self.converter.tachie:
@@ -175,13 +166,6 @@ class RowConverter(object):
             return None
         if PositionMapping.get(tachie_position_str) is not None:
             tachie_position = PositionMapping.get(tachie_position_str)
-            self.converter.tachies[tachie_position] = self.converter.tachie
-            
-            # if self.converter.tachies.get(tachie_position) is not None:
-                # raise ValueError("previous tachie is not hide yet")
-                # return None
-            # else:
-                # self.converter.tachies[tachie_position] = self.converter.tachie
         else:
             raise ValueError("Invalid tachie_position:{}".format(tachie_position_str))
         self.converter.tachie_position = tachie_position
@@ -195,7 +179,7 @@ class RowConverter(object):
         else:
             show_menu = False
         self.converter.show_menu = show_menu
-        return is_option
+        return show_menu
         
     def _converter_is_option(self):
         is_option_str = self.row[ElementColNumMapping.get('is_option')]
@@ -231,32 +215,16 @@ class RowConverter(object):
             text = ''.join(new_text_list)
         return Dialog(text, self.converter.current_character)
 
-    def _converter_hide_tachie_afterward(self):
-        hide_tachie_afterward_str = self.row[ElementColNumMapping.get('hide_tachie_afterward')]
-        hide_tachie_afterward = BooleanMapping.get(hide_tachie_afterward_str, False)
-        self.converter.hide_tachie_afterward = hide_tachie_afterward
-        return hide_tachie_afterward
-    
-    def _converter_hide_tachie_at_pos(self):
-        tachie = ''
-        tachie_position = ''
-        tachie_position_str = str(self.row[ElementColNumMapping.get('hide_tachie_at_pos')]).strip()
-        if not tachie_position_str:
-            return None
-        if PositionMapping.get(tachie_position_str) is not None:
-            tachie_position = PositionMapping.get(tachie_position_str)
-            if self.converter.tachies.get(tachie_position) is None:
-                RenderException("no tachie at that position")
-                return None
-            else:
-                tachie = self.converter.tachies[tachie_position]
-                self.converter.hide_tachie_at_pos = tachie
-        else:
-            RenderException("Invalid tachie_position:{}".format(tachie_position_str))
-        return tachie
   
-    def _converter_transition(self):
-        transition = self.row[ElementColNumMapping.get('transition')]
+    def _converter_transition_1(self):
+        transition = self.row[ElementColNumMapping.get('transition_1')]
+        if not transition:
+            return None
+        t_style = TransitionMapping.get(transition, transition)
+        return Transition(t_style)
+  
+    def _converter_transition_2(self):
+        transition = self.row[ElementColNumMapping.get('transition_2')]
         if not transition:
             return None
         t_style = TransitionMapping.get(transition, transition)
