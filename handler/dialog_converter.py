@@ -25,7 +25,6 @@ RowConvertResult = namedtuple('RowConvertResult',
                                'character',
                                'dialog',
                                'transition_2',
-                               'special_effect',
                                'jump_to_label',  
                                'clear_page',
                                'pause',
@@ -53,7 +52,6 @@ class DialogConverter(object):
         self.dialog = ''
         self.transition_1 = ''
         self.transition_2 = ''
-        self.special_effect = ''
         self.jump_to_label = ''
         self.clear_page = ''
         self.pause = 0
@@ -100,7 +98,6 @@ class RowConverter(object):
             character=self._converter_character(),
             dialog=self._converter_dialog(),
             transition_2=self._converter_transition_2(),
-            special_effect=self._converter_special_effect(),
             jump_to_label=self._converter_jump_to_label(),
             clear_page=self._converter_clear_page(),
             pause=self._converter_pause(),
@@ -261,25 +258,3 @@ class RowConverter(object):
         cmd = self.row[ElementColNumMapping.get('renpy_command')]
         self.converter.renpy_command = cmd
         return Command("    {cmd}".format(cmd=cmd))
-
-
-    # def _converter_menu(self):
-    #     # 分支条件的label写在对话文本列
-    #     menu = self.row[ElementColNumMapping.get('menu')]
-    #     if not menu:
-    #         return None
-    #     text = str(self.row[ElementColNumMapping.get('text')]).replace("\n", "\\n")
-    #     if not text:
-    #         return None
-    #     replace_index_char = []
-    #     for idx, t in enumerate(text):
-    #         if ReplaceCharacterMapping.get(t):
-    #             replace_index_char.append((idx, t))
-
-    #     if replace_index_char:
-    #         new_text_list = list(text)
-    #         for idx, char in replace_index_char:
-    #             new_text_list[idx] = ReplaceCharacterMapping.get(char)
-    #         text = ''.join(new_text_list)
-    #     return Menu(label=text, target=menu)
-

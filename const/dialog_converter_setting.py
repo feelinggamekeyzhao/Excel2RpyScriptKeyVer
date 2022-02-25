@@ -15,11 +15,10 @@ ElementColNumMapping = {
     'character': 10,
     'dialog': 11,
     'transition_2': 12,
-    'special_effect': 13,
-    'jump_to_label': 14,
-    'clear_page': 15,
-    'pause': 16,
-    'renpy_command': 17,
+    'jump_to_label': 13,
+    'clear_page': 14,
+    'pause': 15,
+    'renpy_command': 16,
 }
 
 PositionMapping = {

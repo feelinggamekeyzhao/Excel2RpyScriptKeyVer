@@ -5,6 +5,8 @@ define leon = Character('里昂', color="#ffffff", image="leon", what_suffix="{i
 define lion = Character('萊爾', color="#ffffff", image="lion", what_suffix="{image=end_pic}")
 define staff = Character('職員', color="#ffffff", image="staff", what_suffix="{image=end_pic}")
 define office = Character('全辦公室', color="#ffffff", image="office", what_suffix="{image=end_pic}")
+define black = Character('???', color="#ffffff", image="black", what_suffix="{image=end_pic}")
+define chuchu = Character('催斯奇', color="#ffffff", image="chuchu", what_suffix="{image=end_pic}")
 image side nana normal = "nana_causal_normal"
 image side nana smile1 = "nana_causal_smile1"
 image side nana shy1 = "nana_causal_shy1"
@@ -126,6 +128,12 @@ image fire = "images/fire.png"
 image ht = "images/hetristalk.png"
 image ml1 = "images/movingleon1.png"
 image ml2 = "images/movingleon2.png"
+image black normal1 = "black_devil_normal1"
+image black normal2 = "black_devil_normal2"
+image black smile1 = "black_devil_smile1"
+image black smile2 = "black_devil_smile2"
+image black angry1 = "black_devil_angry1"
+image chuchu normal = "chuchu_normal"
 define narrator_nvl = Character(None, kind=nvl, what_suffix="{image=end_pic}")
 define narrator_adv = Character(None, kind=adv, what_suffix="{image=end_pic}")
 image end_pic:
