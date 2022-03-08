@@ -145,14 +145,20 @@ class Command(RpyElement):
 # key class
 class Dialog(RpyElement):
 
-    def __init__(self, text, character):
+    def __init__(self, text, character, style):
         self.text = text
         self.character = character
+        self.style = style
 
     def render(self):
         result = []
+        transition_str = ""
         if self.character:
-            result.append("    {character} \"{text}\"".format(character=self.character, text=self.text))
+            dialog_text = "    {character} \"{text}\"".format(character=self.character, text=self.text)
+        if self.style:
+            transition_str = " with {}".format(self.style) if self.style else ""
+        result_str = dialog_text + transition_str
+        result.append(result_str)
         return "\n".join(result)
 
 

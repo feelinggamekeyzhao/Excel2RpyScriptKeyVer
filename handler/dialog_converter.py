@@ -24,7 +24,6 @@ RowConvertResult = namedtuple('RowConvertResult',
                                'is_option',
                                'character',
                                'dialog',
-                               'transition_2',
                                'jump_to_label',  
                                'clear_page',
                                'pause',
@@ -97,7 +96,6 @@ class RowConverter(object):
             is_option=self._converter_is_option(),
             character=self._converter_character(),
             dialog=self._converter_dialog(),
-            transition_2=self._converter_transition_2(),
             jump_to_label=self._converter_jump_to_label(),
             clear_page=self._converter_clear_page(),
             pause=self._converter_pause(),
@@ -210,7 +208,8 @@ class RowConverter(object):
             for idx, char in replace_index_char:
                 new_text_list[idx] = ReplaceCharacterMapping.get(char)
             text = ''.join(new_text_list)
-        return Dialog(text, self.converter.current_character)
+        dialog_transition_style = self._converter_transition_2()
+        return Dialog(text, self.converter.current_character, dialog_transition_style)
 
   
     def _converter_transition_1(self):
@@ -225,7 +224,7 @@ class RowConverter(object):
         if not transition:
             return None
         t_style = TransitionMapping.get(transition, transition)
-        return Transition(t_style)
+        return t_style
   
     def _converter_special_effect(self):
         # TODO to implememnt

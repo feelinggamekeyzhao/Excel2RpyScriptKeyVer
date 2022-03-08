@@ -189,8 +189,7 @@ label start:
     
     # Row 11
     play sound "audio/sfx/mobile.mp3"
-    narrator_adv "嗶嗶嗶嗶嗶"
-    with vpunch
+    narrator_adv "嗶嗶嗶嗶嗶" with vpunch
     
     # Row 12
     nana shock1 "（啊！是小光！）"
@@ -222,8 +221,7 @@ label start:
     hikari "我家小寶貝，fighting~!"
     
     # Row 19
-    nana shy1 "啊！！小光！不是說不要再這樣叫我了嗎！"
-    with vpunch
+    nana shy1 "啊！！小光！不是說不要再這樣叫我了嗎！" with vpunch
     
     # Row 20
     nana angry "我已經不是小孩子了！"
@@ -318,8 +316,7 @@ label start:
     
     # Row 46
     play sound "audio/sfx/cat.mp3"
-    nana office_shock1 "哇啊？！那是什麼？！"
-    with vpunch
+    nana office_shock1 "哇啊？！那是什麼？！" with vpunch
     
     # Row 47
     play music "audio/music/bgm08.mp3"
@@ -329,16 +326,14 @@ label start:
     nana office_shock1 "為什麼這種大公司內會有貓？"
     
     # Row 49
-    narrator_adv "那只貓用琥珀似的眼珠定定地看着我，我察覺到有什麼閃閃發亮的東西在他的嘴裏。"
-    with vpunch
+    narrator_adv "那只貓用琥珀似的眼珠定定地看着我，我察覺到有什麼閃閃發亮的東西在他的嘴裏。" with vpunch
     
     # Row 50
     nana office_shock1 "那是我的手鏈！"
     
     # Row 51
     play sound "audio/sfx/cat.mp3"
-    narrator_adv "喵！"
-    with vpunch
+    narrator_adv "喵！" with vpunch
     
     # Row 52
     nana office_shock1 "喂！不要跑！"
@@ -346,8 +341,7 @@ label start:
     # Row 53
     hide cat
     with easeoutleft
-    narrator_adv "它似乎是察覺到我的想法，飛快往窗戶逃跑。"
-    with vpunch
+    narrator_adv "它似乎是察覺到我的想法，飛快往窗戶逃跑。" with vpunch
     
     # Row 54
     play sound "audio/sfx/opendoor.mp3"
@@ -479,8 +473,7 @@ label ch1_1end:
     staff "啊？你誰啊…"
     
     # Row 85
-    staff "人類？！"
-    with vpunch
+    staff "人類？！" with vpunch
     
     # Row 86
     stop music
@@ -541,8 +534,7 @@ label ch1_1end:
     nana office_sadsmile2 "那個…請問…為什麼大家的頭上突然長了角？這是面試的考驗之一嗎？"
     
     # Row 101
-    office "？！！！"
-    with vpunch
+    office "？！！！" with vpunch
     
     # Row 102
     voice "audio/voice/hetris/h_shocked1.ogg"
@@ -588,8 +580,7 @@ label ch1_1end:
     narrator_adv "這時，我注意到眼前的胸口有個閃閃發亮的東西，我的手不受控制地伸向那個東西。"
     
     # Row 114
-    nana office_shy1 "你的衣服…"
-    with vpunch
+    nana office_shy1 "你的衣服…" with vpunch
     
     # Row 115
     show hetris office_angry2 at custom_center
@@ -606,26 +597,22 @@ label ch1_1end:
     # Row 118
     $ persistent.cg1 = True
     # Row 119
-    with fade
     
     # Row 120
     $ renpy.pause()
     # Row 121
-    with vpunch
     
     # Row 122
     narrator_adv "啪！！！"
     
     # Row 123
-    narrator_adv "我還沒碰到他的衣服，他全身的衣服就在我眼前爆開了。"
-    with vpunch
+    narrator_adv "我還沒碰到他的衣服，他全身的衣服就在我眼前爆開了。" with vpunch
     
     # Row 124
     office "？！！！！！！"
     
     # Row 125
-    narrator_adv "除了內褲外，所有衣服都在一瞬間變成碎布。"
-    with vpunch
+    narrator_adv "除了內褲外，所有衣服都在一瞬間變成碎布。" with vpunch
     
     # Row 126
     voice "audio/voice/hetris/h_shocked1.ogg"
@@ -665,8 +652,7 @@ label ch1_1end:
     
     # Row 136
     voice "audio/voice/hetris/h_unable1.ogg"
-    hetris "啊！！！！！！！你！！！！！！！"
-    with vpunch
+    hetris "啊！！！！！！！你！！！！！！！" with vpunch
     
     # Row 137
     show hetris nude_shy2 at my_center:
@@ -674,8 +660,7 @@ label ch1_1end:
         zoom 2 ypos 20
     # Row 139
     voice "audio/voice/hetris/h_anger3.ogg"
-    hetris "你究竟是誰！！！！！！！！！！！"
-    with vpunch
+    hetris "你究竟是誰！！！！！！！！！！！" with vpunch
     
     # Row 140
     nana office_scared2 "(完、完蛋了…)"

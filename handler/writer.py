@@ -132,8 +132,6 @@ class DialogRpyFileWriter(object):
                     f.write(addition_indent + rpy_element.voice.render() + '\n')
                 if rpy_element.dialog and not rpy_element.is_option:
                     f.write(addition_indent + rpy_element.dialog.render() + '\n')
-                if rpy_element.transition_2:
-                    f.write(addition_indent + rpy_element.transition_2.render() + '\n')
                 if rpy_element.jump_to_label:
                     custom_renpy_code = addition_indent + JUMP_TEMPLATE.format(target=rpy_element.jump_to_label)
                     f.write(custom_renpy_code)
