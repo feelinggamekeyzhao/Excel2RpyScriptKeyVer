@@ -1,21 +1,21 @@
-# Excel文件转Rpy脚本(0.1.1)
+# Excel文件轉Rpy腳本 （Key版）
 
-## 开发环境
+## 開發環境
 - Python 3.8
 
-## 模块划分
+## 模塊劃分
 ```
 |
-|-corelib 基础依赖
-     |-- exception  自定义的异常
-|-dist 打包的exe文件
+|-corelib 基礎依賴
+     |-- exception  自定義的異常
+|-dist 打包的exe文檔
 |-handler
-     |-- converter  将Excel中的数据转化为rpy中的对象
-     |-- render     将model中的元素与进程控制渲染成Rpy脚本文件
+     |-- converter  將Excel中的數據轉化為rpy中的對象
+     |-- render     將model中的元素與進程控制渲染成Rpy腳本文檔
 |-model
-     |-- element Rpy游戏的基本元素
-     |-- process Rpy游戏的进程控制
-|--tools  工具类
+     |-- element Rpy遊戲的基本元素
+     |-- process Rpy遊戲的進程控制
+|--tools  工具類
 |--app.py 程序入口
 ```
 
@@ -26,10 +26,14 @@
 
 ## relase notes
 - 0.1.1
-    - fix [立绘回收 #20](https://github.com/HaruhiFanClub/Excel2RpyScript/issues/20)
-    - fix [Nvl模式与adv模式的切换 #19](https://github.com/HaruhiFanClub/Excel2RpyScript/issues/19)
-    - 去掉Exe文件的外部依赖
+    - fix [立繪回收 #20](https://github.com/HaruhiFanClub/Excel2RpyScript/issues/20)
+    - fix [Nvl模式與adv模式的切換 #19](https://github.com/HaruhiFanClub/Excel2RpyScript/issues/19)
+    - 去掉Exe文件的外部依賴
 
 - 0.2.4
-    - fix 条件选择在最后一行时无法读取
-    - 支持对话框头像
+    - fix 條件選擇在最後一行時無法讀取
+    - 支持對話框頭像
+
+- 1.0.0 key版
+    - 好感度判定，數值加減
+    - 全局改善Excel結構

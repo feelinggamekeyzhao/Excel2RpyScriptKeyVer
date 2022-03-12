@@ -141,7 +141,7 @@ class Command(RpyElement):
         return self.cmd
     
 
-class Romance(RpyElement):
+class AddRomance(RpyElement):
     def __init__(self, character, romance_point):
         self.character = character
         self.romance_point = romance_point
@@ -149,6 +149,20 @@ class Romance(RpyElement):
     def render(self):
         return "    $ " + "romance_point_{char_var} += {romance_point}".format(char_var=self.character, romance_point=self.romance_point)
     
+
+class IfRomance(RpyElement):
+    def __init__(self, character, condition, compare_value_1, compare_value_2):
+        self.character = character
+        self.condition = condition
+        self.compare_value_1 = compare_value_1
+        self.compare_value_2 = compare_value_2
+        
+    def render(self):
+        if not self.compare_value_2 and self.condition != 'InRange':
+            return "    if " + "romance_point_{char_var} {condition} {compare_value_1}:".format(char_var=self.character, condition=self.condition, compare_value_1=self.compare_value_1)
+        else:
+            return "    if " + "romance_point_{char_var} >= {compare_value_1} and romance_point_{char_var} <= {compare_value_2}:".format(char_var=self.character, compare_value_1=self.compare_value_1, compare_value_2 = self.compare_value_2)
+            
 
 # key class
 class Dialog(RpyElement):

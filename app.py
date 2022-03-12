@@ -71,7 +71,7 @@ class Application_ui(Frame):
         filemenu = Menu(menubar, tearoff=0)  # tearoff意为下拉
         menubar.add_cascade(label='幫助', menu=filemenu)
         filemenu.add_command(label='影片教程', command=self.open_help_url)
-        filemenu.add_command(label='檢查更新', command=self.check_for_update)
+        # filemenu.add_command(label='檢查更新', command=self.check_for_update)
 
         self.top.config(menu=menubar)
 
@@ -217,11 +217,11 @@ class Application(Application_ui):
         try:
             resp = requests.get("https://api.github.com/repos/HaruhiFanClub/Excel2RpyScript/releases/latest", timeout=2).json()
         except Exception as ex:
-            self.Text.insert(END, "检查更新失败：{}\n请直接到https://github.com/HaruhiFanClub/Excel2RpyScript/releases查看最新版本\n")
-            showinfo("网络连接失败", "\n检查新版本信息失败!\n".format(ex))
+            self.Text.insert(END, "檢查更新失敗：{}\n請直接到https://github.com/HaruhiFanClub/Excel2RpyScript/releases查看最新版本\n")
+            showinfo("網絡連接失敗", "\n檢查更新失敗!\n".format(ex))
             return
         if resp['tag_name'] == CURRENT_VERSION:
-            showinfo("检测成功", "当前已经是最新版本!")
+            showinfo("檢測成功", "當前已是最新版本!")
         else:
             confirm_download = self.showConfirmModal("检查到新版本", "当前版本：{0}  最新版本：{1}, 是否前往{2}下载？"
                                                      .format(CURRENT_VERSION, resp['tag_name'], resp['html_url']))

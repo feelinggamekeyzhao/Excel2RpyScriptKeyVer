@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from tkinter.messagebox import showerror, showinfo
+
 SIDE_CHARACTER_TEMPLATE = "image side {role_name} = \"{path}\"\n"
 
 
@@ -118,10 +120,16 @@ class DialogRpyFileWriter(object):
                 if rpy_element.label:
                     custom_renpy_code = LABEL_TEMPLATE.format(label=rpy_element.label)
                     f.write(custom_renpy_code)
+                if rpy_element.if_romance:
+                    f.write(addition_indent + rpy_element.if_romance.render() + '\n')
+                    addition_indent = "    "    
                 if rpy_element.show_menu:
                     custom_renpy_code = MENU_TEMPLATE
                     f.write(custom_renpy_code)
                 if rpy_element.is_option:
+                    if rpy_element.if_romance:
+                        showerror("轉換錯誤", "Cannot put if_romance and is_option in the same line")
+                        return
                     custom_renpy_code = OPTION_TEMPLATE.format(option=rpy_element.dialog.text)
                     f.write(custom_renpy_code)
                     addition_indent = "        "    

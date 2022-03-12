@@ -177,17 +177,14 @@ label start:
     play sound "audio/sfx/footstep.mp3"
     scene street
     with fade
-    $ romance_point_hikari += 1
     
     # Row 7
     play music "audio/music/bgm04.mp3"
     play sound "audio/sfx/streets_afternoon.mp3"
     nana normal "哇…這就是大都市的感覺嗎！"
-    $ romance_point_hikari += -1
     
     # Row 8
     narrator_adv "直到大學畢業為止都是住在小市鎮的我，對眼前的環境感到十分新鮮。"
-    $ romance_point_lion += 3
     
     # Row 9
     nana normal "(除了中學時跟小光來過這裡遊覽外，都沒有機會來。)"

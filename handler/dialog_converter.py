@@ -8,12 +8,13 @@ from corelib.exception import RenderException
 
 from const.dialog_converter_setting import ElementColNumMapping, PositionMapping, ImageCmdMapping, TransitionMapping, \
     ReplaceCharacterMapping, BooleanMapping
-from model.element import Dialog, Image, Transition, Audio, Command, Voice, Menu, Romance
+from model.element import Dialog, Image, Transition, Audio, Command, Voice, Menu, AddRomance, IfRomance
 
 SheetConvertResult = namedtuple('SheetConvertResult', ['label', 'data'])
 
 RowConvertResult = namedtuple('RowConvertResult',
                               ['label',  
+                               'if_romance',
                                'music',
                                'sound',
                                'scene',
@@ -38,6 +39,7 @@ class DialogConverter(object):
     def __init__(self, parser):
         self.parser = parser
         self.label = ''
+        self.if_romance = ''
         self.music = ''
         self.sound = ''
         self.scene = ''
@@ -88,6 +90,7 @@ class RowConverter(object):
     def convert(self):
         return RowConvertResult(
             label=self._converter_label(),
+            if_romance=self._converter_if_romance(),
             music=self._converter_music(),
             sound=self._converter_sound(),
             scene=self._converter_scene(),
@@ -110,6 +113,19 @@ class RowConverter(object):
         if label:
             self.converter.label = label
         return label
+        
+    def _converter_if_romance(self):
+        character_if_romance = self.row[ElementColNumMapping.get('character_if_romance')]
+        condition = self.row[ElementColNumMapping.get('condition')]
+        compare_value_1 = self.row[ElementColNumMapping.get('compare_value_1')]
+        compare_value_2 = self.row[ElementColNumMapping.get('compare_value_2')]
+        if not character_if_romance or not condition or not compare_value_1:
+            return None
+        if compare_value_1:
+            compare_value_1 = int(compare_value_1)
+        if compare_value_2:
+            compare_value_2 = int(compare_value_2)
+        return IfRomance(character_if_romance, condition, compare_value_1, compare_value_2)
         
     def _converter_music(self):
         music = self.row[ElementColNumMapping.get('music')]
@@ -234,7 +250,7 @@ class RowConverter(object):
         romance_point = self.row[ElementColNumMapping.get('romance_point')]
         if not romance_point:
             return None
-        return Romance(character_romance, int(romance_point))
+        return AddRomance(character_romance, int(romance_point))
   
     def _converter_jump_to_label(self):
         jump_to_label = self.row[ElementColNumMapping.get('jump_to_label')]
