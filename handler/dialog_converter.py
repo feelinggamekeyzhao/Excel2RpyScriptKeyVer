@@ -8,7 +8,7 @@ from corelib.exception import RenderException
 
 from const.dialog_converter_setting import ElementColNumMapping, PositionMapping, ImageCmdMapping, TransitionMapping, \
     ReplaceCharacterMapping, BooleanMapping
-from model.element import Dialog, Image, Transition, Audio, Command, Voice, Menu
+from model.element import Dialog, Image, Transition, Audio, Command, Voice, Menu, Romance
 
 SheetConvertResult = namedtuple('SheetConvertResult', ['label', 'data'])
 
@@ -24,6 +24,7 @@ RowConvertResult = namedtuple('RowConvertResult',
                                'is_option',
                                'character',
                                'dialog',
+                               'romance_point',
                                'jump_to_label',  
                                'clear_page',
                                'pause',
@@ -51,6 +52,7 @@ class DialogConverter(object):
         self.dialog = ''
         self.transition_1 = ''
         self.transition_2 = ''
+        self.romance_point = ''
         self.jump_to_label = ''
         self.clear_page = ''
         self.pause = 0
@@ -100,6 +102,7 @@ class RowConverter(object):
             clear_page=self._converter_clear_page(),
             pause=self._converter_pause(),
             renpy_command=self._converter_renpy_command(),
+            romance_point=self._converter_romance_point(),
         )
         
     def _converter_label(self):
@@ -226,9 +229,12 @@ class RowConverter(object):
         t_style = TransitionMapping.get(transition, transition)
         return t_style
   
-    def _converter_special_effect(self):
-        # TODO to implememnt
-        return None
+    def _converter_romance_point(self):
+        character_romance = self.row[ElementColNumMapping.get('character_romance')]
+        romance_point = self.row[ElementColNumMapping.get('romance_point')]
+        if not romance_point:
+            return None
+        return Romance(character_romance, int(romance_point))
   
     def _converter_jump_to_label(self):
         jump_to_label = self.row[ElementColNumMapping.get('jump_to_label')]

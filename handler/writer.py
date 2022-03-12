@@ -57,16 +57,23 @@ class RpyFileWriter(object):
                 
 
 CHAR_TEMPLATE = "define {variable} = Character('{name}', color=\"{color}\", image=\"{image}\", what_suffix=\"{what_suffix}\")"
-
+ROMANCE_VALUE_TEMPLATE = "default romance_point_{char_var} = {romance_point}"
+# ROMANCE_VALUE_DEFINITION = "default romance_point = {} \n" 
 class CharacterRpyFileWriter(object):
 
     @classmethod
     def write_file(cls, output_dir, res):
         output_path = output_dir + "/" + res.label + '.rpy'
         with open(output_path, 'w', encoding='utf-8') as f:
+            # f.write(ROMANCE_VALUE_DEFINITION)
             for rpy_element in res.data:
                 char_renpy_code = CHAR_TEMPLATE.format(variable=rpy_element.variable, name=rpy_element.name, color=rpy_element.color, image=rpy_element.image, what_suffix=rpy_element.what_suffix) + '\n'
                 f.write(char_renpy_code)
+                if type(rpy_element.default_romance_point) == int:
+                    romance_renpy_code = ROMANCE_VALUE_TEMPLATE.format(char_var=rpy_element.variable, romance_point=rpy_element.default_romance_point) + '\n'
+                    f.write(romance_renpy_code)
+                    
+                    
          
          
 IMAGE_TEMPLATE = "image {variable} = \"{file_name}\""
@@ -132,6 +139,8 @@ class DialogRpyFileWriter(object):
                     f.write(addition_indent + rpy_element.voice.render() + '\n')
                 if rpy_element.dialog and not rpy_element.is_option:
                     f.write(addition_indent + rpy_element.dialog.render() + '\n')
+                if rpy_element.romance_point:
+                    f.write(addition_indent + rpy_element.romance_point.render() + '\n')
                 if rpy_element.jump_to_label:
                     custom_renpy_code = addition_indent + JUMP_TEMPLATE.format(target=rpy_element.jump_to_label)
                     f.write(custom_renpy_code)

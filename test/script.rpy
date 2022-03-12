@@ -1,12 +1,17 @@
 define nana = Character('金娜娜', color="#ffffff", image="nana", what_suffix="{image=end_pic}")
 define hetris = Character('哈菲特', color="#ffffff", image="hetris", what_suffix="{image=end_pic}")
+default romance_point_hetris = 0
 define hikari = Character('瑛光', color="#ffffff", image="hikari", what_suffix="{image=end_pic}")
+default romance_point_hikari = 0
 define leon = Character('里昂', color="#ffffff", image="leon", what_suffix="{image=end_pic}")
+default romance_point_leon = 0
 define lion = Character('萊爾', color="#ffffff", image="lion", what_suffix="{image=end_pic}")
+default romance_point_lion = 0
 define staff = Character('職員', color="#ffffff", image="staff", what_suffix="{image=end_pic}")
 define office = Character('全辦公室', color="#ffffff", image="office", what_suffix="{image=end_pic}")
 define black = Character('???', color="#ffffff", image="black", what_suffix="{image=end_pic}")
 define chuchu = Character('催斯奇', color="#ffffff", image="chuchu", what_suffix="{image=end_pic}")
+default romance_point_chuchu = 0
 image side nana normal = "nana_causal_normal"
 image side nana smile1 = "nana_causal_smile1"
 image side nana shy1 = "nana_causal_shy1"
@@ -172,14 +177,17 @@ label start:
     play sound "audio/sfx/footstep.mp3"
     scene street
     with fade
+    $ romance_point_hikari += 1
     
     # Row 7
     play music "audio/music/bgm04.mp3"
     play sound "audio/sfx/streets_afternoon.mp3"
     nana normal "哇…這就是大都市的感覺嗎！"
+    $ romance_point_hikari += -1
     
     # Row 8
     narrator_adv "直到大學畢業為止都是住在小市鎮的我，對眼前的環境感到十分新鮮。"
+    $ romance_point_lion += 3
     
     # Row 9
     nana normal "(除了中學時跟小光來過這裡遊覽外，都沒有機會來。)"

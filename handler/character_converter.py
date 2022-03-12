@@ -17,7 +17,8 @@ RowConvertResult = namedtuple('RowConvertResult',
                                'name',
                                'color',
                                'image',
-                               'what_suffix'
+                               'what_suffix',
+                               'default_romance_point'
                                ])
 
 
@@ -30,6 +31,7 @@ class CharacterConverter(object):
         self.color = ''
         self.image = ''
         self.what_suffix = ''
+        self.default_romance_point = 0
 
     def generate_rpy_elements(self):
         result = []
@@ -65,6 +67,7 @@ class RowConverter(object):
             color=self._converter_color(),
             image=self._converter_image(),
             what_suffix=self._converter_what_suffix(),
+            default_romance_point=self._converter_default_romance_point(),
         )
 
     def _converter_variable(self):
@@ -96,3 +99,10 @@ class RowConverter(object):
         if what_suffix:
             self.converter.what_suffix = what_suffix
         return what_suffix
+
+    def _converter_default_romance_point(self):
+        default_romance_point = self.row[ElementColNumMapping.get('default_romance_point')]
+        if default_romance_point != "NA":
+            default_romance_point = int(default_romance_point)
+            self.converter.default_romance_point = default_romance_point
+        return default_romance_point

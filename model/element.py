@@ -140,8 +140,16 @@ class Command(RpyElement):
     def render(self):
         return self.cmd
     
+
+class Romance(RpyElement):
+    def __init__(self, character, romance_point):
+        self.character = character
+        self.romance_point = romance_point
+        
+    def render(self):
+        return "    $ " + "romance_point_{char_var} += {romance_point}".format(char_var=self.character, romance_point=self.romance_point)
     
-    
+
 # key class
 class Dialog(RpyElement):
 
