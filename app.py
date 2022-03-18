@@ -25,7 +25,7 @@ class Application_ui(Frame):
 
     def __init__(self, master=None):
         Frame.__init__(self, master)
-        self.master.title('Excel轉化Rpy工具_Key版')
+        self.master.title('Excel轉化Rpy工具_Key版 v1.0.2')
         self.master.geometry('600x343')
         self.createWidgets()
 

@@ -8,7 +8,7 @@ from corelib.exception import RenderException
 
 from const.dialog_converter_setting import ElementColNumMapping, PositionMapping, ImageCmdMapping, TransitionMapping, \
     ReplaceCharacterMapping, BooleanMapping
-from model.element import Dialog, Image, Transition, Audio, Command, Voice, Menu, AddRomance, IfRomance
+from model.element import Dialog, Image, Transition, Audio, Command, Voice, Menu, AddRomance, IfRomance, Option
 
 SheetConvertResult = namedtuple('SheetConvertResult', ['label', 'data'])
 
@@ -30,6 +30,7 @@ RowConvertResult = namedtuple('RowConvertResult',
                                'clear_page',
                                'pause',
                                'renpy_command',
+                               'is_game_end',
                                ])
 
 
@@ -106,6 +107,7 @@ class RowConverter(object):
             pause=self._converter_pause(),
             renpy_command=self._converter_renpy_command(),
             romance_point=self._converter_romance_point(),
+            is_game_end=self._converter_is_game_end(),
         )
         
     def _converter_label(self):
@@ -197,9 +199,15 @@ class RowConverter(object):
         
     def _converter_is_option(self):
         is_option_str = self.row[ElementColNumMapping.get('is_option')]
+        if not is_option_str:
+            return None
         is_option = BooleanMapping.get(is_option_str, False)
+        if not is_option:
+            return None
         self.converter.is_option = is_option
-        return is_option
+        if is_option_str == "Yes If 2nd Playthrough":
+            return Option(True)
+        return Option(False)
 
 
     def _converter_character(self):
@@ -279,3 +287,9 @@ class RowConverter(object):
         cmd = self.row[ElementColNumMapping.get('renpy_command')]
         self.converter.renpy_command = cmd
         return Command("    {cmd}".format(cmd=cmd))
+
+    def _converter_is_game_end(self):
+        is_game_end = self.row[ElementColNumMapping.get('is_game_end')]
+        if not is_game_end:
+            return None
+        return is_game_end

@@ -132,6 +132,17 @@ class Menu(RpyElement):
         self.target = target
 
 
+class Option(RpyElement):
+    def __init__(self, play_through_required):
+        self.play_through_required = play_through_required
+
+    def render(self, text):
+        if self.play_through_required:
+            return "        \"{option}\" if persistent.en > 0:\n".format(option=text)
+        else:
+            return "        \"{option}\":\n".format(option=text)
+    
+
 # 自定义指令
 class Command(RpyElement):
     def __init__(self, cmd):

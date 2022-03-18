@@ -106,7 +106,9 @@ LABEL_TEMPLATE = "label {label}:\n"
 PAUSE_TEMPLATE = "    with Pause({duration})\n" 
 JUMP_TEMPLATE = "    jump {target}\n" 
 MENU_TEMPLATE = "    menu:\n"
-OPTION_TEMPLATE = "        \"{option}\":\n"
+# OPTION_TEMPLATE = "        \"{option}\":\n"
+PLAYTHROUGH_COUNT_TEMPLATE = "    if persistent.en == None:\n        $ persistent.en = 0\n"
+GAME_END_TEMPLATE = "    $ persistent.en += 1"
 class DialogRpyFileWriter(object):
     
     @classmethod
@@ -120,6 +122,8 @@ class DialogRpyFileWriter(object):
                 if rpy_element.label:
                     custom_renpy_code = LABEL_TEMPLATE.format(label=rpy_element.label)
                     f.write(custom_renpy_code)
+                    if rpy_element.label == 'start':
+                        f.write(PLAYTHROUGH_COUNT_TEMPLATE)
                 if rpy_element.if_romance:
                     f.write(addition_indent + rpy_element.if_romance.render() + '\n')
                     addition_indent = "    "    
@@ -130,7 +134,7 @@ class DialogRpyFileWriter(object):
                     if rpy_element.if_romance:
                         showerror("轉換錯誤", "Cannot put if_romance and is_option in the same line")
                         return
-                    custom_renpy_code = OPTION_TEMPLATE.format(option=rpy_element.dialog.text)
+                    custom_renpy_code = rpy_element.is_option.render(rpy_element.dialog.text)
                     f.write(custom_renpy_code)
                     addition_indent = "        "    
                 if rpy_element.music:
@@ -159,4 +163,6 @@ class DialogRpyFileWriter(object):
                     f.write(custom_renpy_code)
                 if rpy_element.renpy_command:
                     f.write(addition_indent + rpy_element.renpy_command.render() + '\n')
+                if rpy_element.is_game_end:
+                    f.write(addition_indent + GAME_END_TEMPLATE + '\n')
                 index += 1

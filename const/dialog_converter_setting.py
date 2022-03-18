@@ -25,6 +25,7 @@ ElementColNumMapping = {
     'clear_page': 20,
     'pause': 21,
     'renpy_command': 22,
+    'is_game_end': 23,
 }
 
 PositionMapping = {
@@ -36,7 +37,8 @@ PositionMapping = {
 # "truecenter": "truecenter",
 
 BooleanMapping = {
-    "Yes": True
+    "Yes": True,
+    "Yes If 2nd Playthrough": True,
 }
 
 ImageCmdMapping = {
