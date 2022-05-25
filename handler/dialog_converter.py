@@ -200,11 +200,13 @@ class RowConverter(object):
     def _converter_is_option(self):
         is_option_str = self.row[ElementColNumMapping.get('is_option')]
         if not is_option_str:
+            self.converter.is_option = False
             return None
         is_option = BooleanMapping.get(is_option_str, False)
         if not is_option:
+            self.converter.is_option = False
             return None
-        self.converter.is_option = is_option
+        self.converter.is_option = True
         if is_option_str == "Yes If 2nd Playthrough":
             return Option(True)
         return Option(False)
